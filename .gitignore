@@ -1,0 +1,6 @@
+build/*
+*.png
+*.dat
+*.svg
+*.pdf
+*.mp4
