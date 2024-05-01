@@ -1,10 +1,11 @@
 <h1>Simulations</h1>
 <p>The FLAMINGO simulations and their properties are listed below.</p>
 <h2>Hydrodynamical simulations</h2>
-<p>The first table below contain the hydrodynamical simulations in the set (Table 2 from Schaye et al. 2023). The first four lines 
+<p>The first table below contain the hydrodynamical simulations in the set. The first four lines 
     list the simulations that use the fiducial galaxy formation model and assume the fiducial cosmology, 
     but use different volumes and resolutions. The remaining lines list the model variations, which all 
-    use a 1 Gpc box and intermediate resolution. The columns list the simulation identifier (where m8, 
+    use a 1 Gpc box and intermediate resolution. The link after each simulation name gives the
+    paper where the simulation was introducted. The columns list the simulation identifier (where m8, 
     m9 and m10 indicate log<sub>10</sub> of the mean baryonic particle mass and correspond to high, 
     intermediate, and low resolution, respectively; absence of this part implies m9 resolution); the 
     number of standard deviations by which the observed stellar masses are shifted before calibration, 
@@ -245,6 +246,20 @@
         <td>PlanckNu0p24Fix</td>
     </tr>
     <tr>
+        <th scope="row">PlanckNu0p48Fix<sup><a href="#2"> [2]</a></sup></th>
+        <td>0</td>
+        <td>0</td>
+        <td>thermal</td>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>1.07 x 10<sup>9</sup></td>
+        <td>5.62 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckNu0p48Fix</td>
+    </tr>
+    <tr>
         <th scope="row">LS8<sup><a href="#1"> [1]</a></sup></th>
         <td>0</td>
         <td>0</td>
@@ -258,12 +273,41 @@
         <td>5.70</td>
         <td>LS8</td>
     </tr>
+    <tr>
+        <th scope="row">PlanckDCDM12<sup><a href="#2"> [2]</a></sup></th>
+        <td>0</td>
+        <td>0</td>
+        <td>thermal</td>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>1.07 x 10<sup>9</sup></td>
+        <td>5.65 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckDCDM12</td>
+    </tr>
+    <tr>
+        <th scope="row">PlanckDCDM24<sup><a href="#2"> [2]</a></sup></th>
+        <td>0</td>
+        <td>0</td>
+        <td>thermal</td>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>1.07 x 10<sup>9</sup></td>
+        <td>5.65 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckDCDM24</td>
+    </tr>
     </tbody>
 </table>
 <h2>Dark matter only simulations</h2>
-<p>The second table contains the gravity-only FLAMINGO simulations (Table 3 from Schaye et al. 2023). Simulation L1_m9_ip_DMO is identical 
+<p>The second table contains the gravity-only FLAMINGO simulations. Simulation L1_m9_ip_DMO is identical 
     to L1_m9_DMO except that the phases in the initial conditions were inverted. Note that there are no 
-    hydrodynamical counterparts for L5p6_m10_DMO, PlanckNu0p12Var_DMO, L1_m9_ip_DMO and L11p2_m11_DMO.</p>
+    hydrodynamical counterparts for L5p6_m10_DMO, PlanckNu0p12Var_DMO, L1_m9_ip_DMO, L11p2_m11_DMO, and
+    FLAMINGO-10K.</p>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -369,6 +413,16 @@
         <td>PlanckNu0p24Fix</td>
     </tr>
     <tr>
+        <th scope="row">PlanckNu0p48Fix_DMO<sup><a href="#2"> [2]</a></sup></th>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>6.68 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckNu0p48Fix</td>
+    </tr>
+    <tr>
         <th scope="row">LS8_DMO<sup><a href="#1"> [1]</a></sup></th>
         <td>1</td>
         <td>1800<sup>3</sup></td>
@@ -377,6 +431,26 @@
         <td>22.3</td>
         <td>5.70</td>
         <td>LS8</td>
+    </tr>
+    <tr>
+        <th scope="row">PlanckDCDM12_DMO<sup><a href="#2"> [2]</a></sup></th>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>6.72 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckDCDM12</td>
+    </tr>
+    <tr>
+        <th scope="row">PlanckDCDM24_DMO<sup><a href="#2"> [2]</a></sup></th>
+        <td>1</td>
+        <td>1800<sup>3</sup></td>
+        <td>1000<sup>3</sup></td>
+        <td>6.72 x 10<sup>9</sup></td>
+        <td>22.3</td>
+        <td>5.70</td>
+        <td>PlanckDCDM24</td>
     </tr>
     <tr>
         <th scope="row">L1_m9_ip_DMO<sup><a href="#1"> [1]</a></sup></th>
@@ -412,7 +486,7 @@
 </table>
 <h2>Cosmologies</h2>
 <p>Finally, the table below lists the values of the cosmological parameters used in different 
-    simulations (Table 4 from Schaye et al. 2023). The columns list the prefix used to indicate the cosmology in the simulation name 
+    simulations (Table 4 from <a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.4978S/abstract" class="active text-decoration-none">Schaye et al. 2023</a>, Table 1 from <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv240312967E/abstract" class="active text-decoration-none">Elbers et al. 2024</a>). The columns list the prefix used to indicate the cosmology in the simulation name 
     (note that for brevity the prefix 'D3A' that indicates the fiducial cosmology is omitted from the 
     simulation identifiers); the dimensionless Hubble constant, h; the total matter density parameter, 
     &Omega;<sub>m</sub>; the dark energy density parameter, &Omega;<sub>&Lambda;</sub>; the baryonic 
@@ -423,9 +497,9 @@
     spheres of radius 8 h<sup>-1</sup> Mpc extrapolated to z=0 using linear theory, &sigma;<sub>8</sub>; 
     the amplitude of the initial power spectrum parametrized as S<sub>8</sub> &equiv;
     &sigma;<sub>8</sub>(&Omega;<sub>m</sub>/0.3)<sup>1/2</sup>; the neutrino matter density parameter, 
-    &Omega;<sub>&nu;</sub> &cong; &sum; m<sub>&nu;</sub>c<sup>2</sup>/(93.14 h<sup>2</sup> eV). Note 
-    that the values of the Hubble and density parameters are given at z=0. The values of the parameters 
-    that are listed in the last three columns have been computed from the other parameters.</p>
+    &Omega;<sub>&nu;</sub> &cong; &sum; m<sub>&nu;</sub>c<sup>2</sup>/(93.14 h<sup>2</sup> eV); the dark 
+    matter decay rate, &Gamma;. Note 
+    that the values of the Hubble and density parameters are given at z=0.</p>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -440,7 +514,7 @@
         <th>&sigma;<sub>8</sub></th>
         <th>S<sub>8</sub></th>
         <th>&Omega;<sub>&nu;</sub></th>
-        <th>&Gamma;h/H<sub>0</sub></th>
+        <th>&Gamma; (h/H<sub>0</sub>)</th>
     </tr>
     </thead>
     <tbody>
@@ -515,6 +589,20 @@
         <td>-</td>
     </tr>
     <tr>
+        <th scope="row">PlanckNu0p48Fix</th>
+        <td>0.673</td>
+        <td>0.316</td>
+        <td>0.684</td>
+        <td>0.0494</td>
+        <td>0.48 eV</td>
+        <td>2.101 x 10<sup>-9</sup></td>
+        <td>0.966</td>
+        <td>0.709</td>
+        <td>0.728</td>
+        <td>11.4 x 10<sup>-3</sup></td>
+        <td>-</td>
+    </tr>
+    <tr>
         <th scope="row">LS8</th>
         <td>0.682</td>
         <td>0.305</td>
@@ -527,6 +615,34 @@
         <td>0.766</td>
         <td>1.39 x 10<sup>-3</sup></td>
         <td>-</td>
+    </tr>
+    <tr>
+        <th scope="row">PlanckDCDM12</th>
+        <td>0.673</td>
+        <td>0.274</td>
+        <td>0.726</td>
+        <td>0.0494</td>
+        <td>0.06 eV</td>
+        <td>2.101  x 10<sup>-9</sup></td>
+        <td>0.966</td>
+        <td>0.794</td>
+        <td>0.759</td>
+        <td>1.42 x 10<sup>-3</sup></td>
+        <td>0.12</td>
+    </tr>
+    <tr>
+        <th scope="row">PlanckDCDM24</th>
+        <td>0.673</td>
+        <td>0.239</td>
+        <td>0.726</td>
+        <td>0.0494</td>
+        <td>0.06 eV</td>
+        <td>2.101  x 10<sup>-9</sup></td>
+        <td>0.966</td>
+        <td>0.777</td>
+        <td>0.694</td>
+        <td>1.42 x 10<sup>-3</sup></td>
+        <td>0.24</td>
     </tr>
     </tbody>
 </table>
