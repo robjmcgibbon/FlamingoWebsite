@@ -4,3 +4,5 @@ build/*
 *.svg
 *.pdf
 *.mp4
+src/pages/papers.html
+token
