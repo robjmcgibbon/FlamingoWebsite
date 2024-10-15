@@ -233,7 +233,7 @@ def create_thumbnail(img_id, img_src):
     """
     Create a thumbnail for the given image file.
     """
-    cmd = f"convert src/images/{img_src} -resize 200x200 build/images/{img_id}_200.png"
+    cmd = f"magick src/images/{img_src} -resize 200x200 build/images/{img_id}_200.png"
     run_process(cmd)
     return f"images/{img_id}_200.png"
 
@@ -245,12 +245,12 @@ def create_image(img_id, img_src):
     """
 #    file_name, file_extension = os.path.splitext(f"{img_src}")
 #    if file_extension == ".pdf":
-#        cmd = f"convert -density 600 src/images/{img_src} -quality 100 -flatten src/images/{file_name}.png"
+#        cmd = f"magick -density 600 src/images/{img_src} -quality 100 -flatten src/images/{file_name}.png"
 #        run_process(cmd)
 #        img_src = file_name + ".png"
     cmd = f"cp src/images/{img_src} build/images/{img_id}_full.png"
     run_process(cmd)
-    cmd = f"convert src/images/{img_src} -resize 768x800\> build/images/{img_id}_800.png"
+    cmd = f"magick src/images/{img_src} -resize 768x800\> build/images/{img_id}_800.png"
     run_process(cmd)
     return f"images/{img_id}_800.png"
 
