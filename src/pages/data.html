@@ -1,0 +1,88 @@
+<h1>Power Spectra</h1>
+
+<h2>Matter Power Spectra</h2>
+<p>
+The total matter power spectra (calculated using all particle types, including neutrinos) can be downloaded for all simulations from 
+<a href="https://ftp.strw.leidenuniv.nl/FLAMINGO/power_spectra/" class="active text-decoration-none">https://ftp.strw.leidenuniv.nl/FLAMINGO/power_spectra/</a>.
+The data from each simulation is contained within an HDF5 file. Each file contains the power spectra for 123 different redshifts. 
+For each redshift we store the wavenumber, <i>k</i>, and the corresponding shot-noise subtracted power, <i>P(k)</i>. 
+The wavenumber has units of comoving Mpc<sup>-1</sup> (note there is <b>no</b> factor of <i>h</i>), and the power has units of comoving Mpc<sup>3</sup>. 
+The shot noise is stored as an attribute for each redshift, and also has units of comoving Mpc<sup>3</sup>.
+The following is an example python script for loading and plotting the power spectra for the L1_m9 simulation:
+</p>
+
+<!-- Bootstrap grid system -->
+<div class="row align-items-start">
+  <!-- Column for the code block -->
+  <div class="col-md-6 mb-4">
+    <div class="box">
+      <pre class="code-block">
+import numpy as np
+import h5py
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(1)
+with h5py.File('L1_m9.hdf5') as file:
+    for z in [2, 0]:
+        k = file[f'z={z:.2f}/k'][:]
+        p = file[f'z={z:.2f}/P(k)'][:]
+        ax.plot(k, p, label=f'L1_m9 (z={z})')
+    shot_noise = file['z=0.00'].attrs['Shot noise (Mpc**3)']
+    ax.axhline(shot_noise, c='k', ls='--', label='Shot noise')
+ax.set_xlabel('Wavenumber $k$ [$\mathrm{Mpc}^{-1}$]')
+ax.set_ylabel('$P(k)$ [$\mathrm{Mpc}^{3}$]')
+ax.set_xscale('log')
+ax.set_yscale('log')
+ax.legend()
+      </pre>
+    </div>
+  </div>
+  
+  <!-- Column for the image -->
+  <div class="col-md-6">
+    <figure class="figure">
+      <img src="assets/power_spectra_example.png" class="img-fluid" alt="Power spectra">
+    </figure>
+  </div>
+</div>
+
+<p>
+A description of each run, including cosmological parameters, can be found on the 
+<a href="simulations.html" class="active text-decoration-none">simulations page</a>. To find the dark matter only equivalent of a hydrodynamical simulation, 
+look for the run in the list of dark matter only simulations which has the same cosmology, box size, and number of particles. The power spectra do contain 
+some small artifacts (such as the small peak in the middle of the z=2 line in the example) which are due to combining foldings, and are not real.
+</p>
+
+<p>
+If you use the power spectra in a publication, then please cite the FLAMINGO project description paper (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.4978S/abstract" class="active text-decoration-none">Schaye+23</a>) and the paper presenting the power spectra (<a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>). If the calibration of the subgrid feedback is mentioned, then please cite the paper describing how the calibration was done (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.6103K/abstract" class="active text-decoration-none">Kugel+23</a>).
+</p>
+
+<h2>Baryonic response emulator</h2>
+
+<!--TODO: Add link to PyPI webpage-->
+<p>
+<!--The effect of baryons on the matter power spectrum for all the simulations varying feedback in the FLAMINGO-->
+<!--suite is presented in the form of a Gaussian process emulator encapsulated in a python package. -->
+<!--It is available via PyPI index (<code> pip install FlamingoBaryonResponseEmulator </code>) or from -->
+<!--<a href="https://github.com/FLAMINGOSIM/FlamingoBaryonResponseEmulator" class="active text-decoration-none">github</a>,-->
+<!--where full documentation is also available.-->
+A Gaussian process emulator to model the effect of baryons on the matter power spectrum for all the simulations varying feedback in the FLAMINGO
+suite has been developed as part of <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>.
+Upon acceptance of the paper it shall become publically available via PyPI index and on github.
+</p>
+
+<p>
+The emulator can be used to predict the deviation of the matter power spectrum for the hydrodynamical simulation 
+from the corresponding dark matter only simulation due to baryon and galaxy formation physics.
+<!--The package is described by -->
+<!--<a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>. -->
+The response as a function of wavenumber <i>k</i> is returned
+by the emulator as a function of redshift and three parameters characterizing the galaxy and cluster properties 
+in the simulations. These are (i) the offset in the gas fraction in clusters from the Xray-based data used for 
+the calibration of the simulations, (ii) the offset in the galaxy masses from the stellar mass function data
+used for the calibration, and (iii) the fraction of the AGN feedback taking place in the form of collimated
+jets as opposed to thermally-driven winds. The emulator is accurate to better than 1% for redshifts lower than 2 
+and for comoving scales up to <i>k</i>=10<i>h</i>/Mpc.
+Evaluation of the response for a given model is fast (1ms on 1 CPU core).
+</p>
+

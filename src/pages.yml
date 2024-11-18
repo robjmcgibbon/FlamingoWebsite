@@ -218,5 +218,8 @@ papers.html:
 team.html:
   title: Team
 
+data.html:
+  title: Power Spectra
+
 simulations.html:
   title: Simulations

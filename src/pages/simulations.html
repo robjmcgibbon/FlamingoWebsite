@@ -1,11 +1,13 @@
 <h1>Simulations</h1>
-<p>The FLAMINGO simulations and their properties are listed below.</p>
-<h2>Hydrodynamical simulations</h2>
+<p>This pages lists the various FLAMINGO simulations and their parameters. The <a href="#hydro_table" class="active text-decoration-none">first table</a> describes the hydrodynamical simulations, the <a href="#dmo_table" class="active text-decoration-none">second table</a> lists the dark matter only simulations, and the <a href="#cosmo_table" class="active text-decoration-none">third table</a> lists the various cosmologies.
+</p>
+
+<h2 id="hydro_table">Hydrodynamical simulations</h2>
 <p>The first table below contain the hydrodynamical simulations in the set. The first four lines 
     list the simulations that use the fiducial galaxy formation model and assume the fiducial cosmology, 
     but use different volumes and resolutions. The remaining lines list the model variations, which all 
     use a 1 Gpc box and intermediate resolution. The link after each simulation name gives the
-    paper where the simulation was introducted. The columns list the simulation identifier (where m8, 
+    paper where the simulation was introduced. The columns list the simulation identifier (where m8, 
     m9 and m10 indicate log<sub>10</sub> of the mean baryonic particle mass and correspond to high, 
     intermediate, and low resolution, respectively; absence of this part implies m9 resolution); the 
     number of standard deviations by which the observed stellar masses are shifted before calibration, 
@@ -16,7 +18,7 @@
     N<sub>&nu;</sub>; the initial mean baryonic particle mass, m<sub>g</sub>; the mean CDM particle 
     mass, m<sub>CDM</sub>; the Plummer-equivalent comoving gravitational softening length, 
     &epsilon;<sub>com</sub>; the maximum proper gravitational softening length, &epsilon;<sub>prop</sub>; 
-    and the assumed cosmology which is specified table at the bottom of this page.</p>
+    and the assumed cosmology (which refers to the <a href="#cosmo_table" class="active text-decoration-none">cosmology table</a>).</p>
 <table class="table table-striped">
     <thead>
     <tr>
@@ -331,7 +333,7 @@
     </tr>
     </tbody>
 </table>
-<h2>Dark matter only simulations</h2>
+<h2 id="dmo_table">Dark matter only simulations</h2>
 <p>The second table contains the gravity-only FLAMINGO simulations. Simulation L1_m9_ip_DMO is identical 
     to L1_m9_DMO except that the phases in the initial conditions were inverted. Note that there are no 
     hydrodynamical counterparts for L5p6_m10_DMO, PlanckNu0p12Var_DMO, L1_m9_ip_DMO, L11p2_m11_DMO, and
@@ -512,7 +514,7 @@
     </tr>
     </tbody>
 </table>
-<h2>Cosmologies</h2>
+<h2 id="cosmo_table">Cosmologies</h2>
 <p>Finally, the table below lists the values of the cosmological parameters used in different 
     simulations (Table 4 from <a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.4978S/abstract" class="active text-decoration-none">Schaye et al. 2023</a>, Table 1 from <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv240312967E/abstract" class="active text-decoration-none">Elbers et al. 2024</a>). The columns list the prefix used to indicate the cosmology in the simulation name 
     (note that for brevity the prefix 'D3A' that indicates the fiducial cosmology is omitted from the 

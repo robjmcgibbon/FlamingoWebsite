@@ -113,3 +113,17 @@ body::before { /* delete all except the color line if we don't want the image */
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
+
+.code-block {
+    margin: 0px;
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px; /* Padding around the code */
+    border-radius: 10px; /* Rounded corners */
+    font-family: 'Courier New', Courier, monospace; /* Monospaced font */
+    font-size: 14px; /* Font size */
+    white-space: pre-wrap; /* Allow line wrapping */
+    border: 1px solid #dee2e6; /* Light border */
+    display: inline-block; /* Ensure the block resizes to fit the content */
+    overflow-x: auto; /* Horizontal scroll for long lines */
+    max-width: 100%; /* Prevent the block from exceeding the container's width */
+}
