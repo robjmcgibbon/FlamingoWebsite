@@ -6,3 +6,4 @@ build/*
 *.mp4
 src/pages/papers.html
 token
+cron_job.out
