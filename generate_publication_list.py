@@ -9,22 +9,30 @@ with open('token', 'r') as file:
 # Identifier of the FLAMINGO ADS library
 library = 'PU1J-aufRMujuhkIIRyxzA'
 
-# Query list of papers
+# Get list of papers in the library
 print('Querying ADS library for paper list')
-results = requests.get(f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}",
-                       headers={'Authorization': 'Bearer ' + token})
-bibcodes = results.json()['documents']
+bibcodes = []
+headers = {'Authorization': 'Bearer ' + token}
+rows = 40
 
-# Loop through and process each paper
-papers = []
-for i_bibcode, bibcode in enumerate(bibcodes):
-    # Query paper data
-    print(f'Querying paper: {i_bibcode+1}/{len(bibcodes)}')
-    # TODO: Query multiple papers at the same time
-    encoded_query = urlencode({"q": f"bibcode:{bibcode}", 'fl': 'title,author,pubdate,date,pub,identifier,year'})
-    results = requests.get("https://api.adsabs.harvard.edu/v1/search/query?{}".format(encoded_query),
-                           headers={'Authorization': 'Bearer ' + token})
-    result = dict(results.json()['response']['docs'][0])
+# Initial query, get total number of papers
+query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
+results = requests.get(query, headers=headers)
+n_bibcodes_in_library = results.json()['metadata']['num_documents']
+bibcodes += results.json()['documents']
+
+# Pagination
+while len(bibcodes) < n_bibcodes_in_library:
+    query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
+    results = requests.get(query, headers=headers)
+    bibcodes += results.json()['documents']
+
+
+def format_paper_data(result):
+    '''
+    Takes in the ADS OpenAPI response and extracts the information
+    we want to display on the webpage.
+    '''
 
     # Generate author list
     if len(result['author']) < 20:
@@ -43,28 +51,45 @@ for i_bibcode, bibcode in enumerate(bibcodes):
         if 'arXiv:' in identifier:
             arxiv_identifier = identifier.replace('arXiv:', '')
     if arxiv_identifier == '':
-        print(f'Arxiv link not found for: {bibcode}')
+        print(f'Arxiv link not found for: {result["identifier"][0]}')
         exit()
 
     # Shorter name for journal
     journal = {
             'arXiv e-prints': 'arxiv',
             'Monthly Notices of the Royal Astronomical Society': 'MNRAS',
+            'The Astrophysical Journal': 'ApJ',
     }.get(result['pub'], '')
     if journal == '':
         print('Journal not recognised:', result['pub'])
         journal = result['pub']
 
-    # Save paper data
-    data = (
+    # Return parsed data
+    return (
         html.escape(result['title'][0]), # Escape troublesome characters
         author,
-        f'https://ui.adsabs.harvard.edu/abs/{bibcode}',
+        f'https://ui.adsabs.harvard.edu/abs/{result["identifier"][0]}',
         f'https://arxiv.org/abs/{arxiv_identifier}',
         journal,
         result['year'],
     )
-    papers.append(data)
+
+# Use the API to get information for the papers
+papers = []
+rows = 5  # How many papers to include for each API call
+for i in range(0, len(bibcodes), rows):
+    bibcode_query = f'bibcode:{bibcodes[i]}'
+    for j in range(1, rows):
+        if i + j < len(bibcodes):
+            bibcode_query += f' OR bibcode:{bibcodes[i+j]}'
+    query_parameters = urlencode({"q": bibcode_query, 'fl': 'title,author,pubdate,date,pub,identifier,year'})
+    query = "https://api.adsabs.harvard.edu/v1/search/query?{}".format(query_parameters)
+    results = requests.get(query, headers=headers)
+
+    for result in results.json()['response']['docs']:
+        print(f'Processing paper: {len(papers)+1}/{len(bibcodes)}')
+        data = format_paper_data(dict(result))
+        papers.append(data)
 
 # Sort based on arxiv identifier
 papers = sorted(papers, key=lambda d: d[3])
