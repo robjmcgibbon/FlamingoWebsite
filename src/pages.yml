@@ -218,8 +218,12 @@ papers.html:
 team.html:
   title: Team
 
-data.html:
+power_spectra.html:
   title: Power Spectra
 
 simulations.html:
   title: Simulations
+
+simulation_colours.html:
+  # Don't add this page to the navbar
+  title: ""
