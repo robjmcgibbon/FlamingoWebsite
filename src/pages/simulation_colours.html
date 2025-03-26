@@ -4,76 +4,113 @@
 </figure>
 <div class="box">
   <pre class="code-block">
-FLAMINGO_colors = [
-    "#117733",
-    "#332288",
-    "#DDCC77",
-    "#CC6677",
-    "#abd0e6",
-    "#6aaed6",
-    "#3787c0",
-    "#105ba4",
-    "#FF8C40",
-    "#CC4314",
-    "#71E543",
-    "#55E18E",
-    "#44AA99",
-    "#999933",
-    "#AA4499",
-    "#7a4214",
-    "#882255",
-    "#7b68ee",
-    "#FFD700",
-    "#FFA500",
-    "#000000",
-]
-
-FLAMINGO_labels = [
-    r"L1$\_$m9",
-    r"L2p8$\_$m9",
-    r"L1$\_$m10",
-    r"L1$\_$m8",
-    r"fgas$+2\sigma$",
-    r"fgas$-2\sigma$",
-    r"fgas$-4\sigma$",
-    r"fgas$-8\sigma$",
-    r"M*$-\sigma$",
-    r"M*$-\sigma+$fgas$-4\sigma$",
-    "JETS",
-    r"JETS fgas$-4\sigma$",
-    "Planck",
-    "PlanckNu0p24Fix ",
-    "PlanckNu0p24Var",
-    "PlanckNu0p48Fix",
-    "LS8",
-    r"LS8_fgas$-8\sigma$",
-    "PlanckDCDM12",
-    "PlanckDCDM24",
-    "no-cooling",
-]
-
-FLAMINGO_run_names = [
-    "L1000N1800_HYDRO_FIDUCIAL",
-    "L2800N5040_HYDRO_FIDUCIAL",
-    "L1000N0900_HYDRO_FIDUCIAL",
-    "L1000N3600_HYDRO_FIDUCIAL",
-    "L1000N1800_HYDRO_WEAK_AGN",
-    "L1000N1800_HYDRO_STRONG_AGN",
-    "L1000N1800_HYDRO_STRONGER_AGN",
-    "L1000N1800_HYDRO_STRONGEST_AGN",
-    "L1000N1800_HYDRO_STRONG_SUPERNOVA",
-    "L1000N1800_HYDRO_STRONGER_AGN_STRONG_SUPERNOVA",
-    "L1000N1800_HYDRO_JETS_published",
-    "L1000N1800_HYDRO_STRONG_JETS_published",
-    "L1000N1800_HYDRO_PLANCK",
-    "L1000N1800_HYDRO_PLANCK_LARGE_NU_FIXED",
-    "L1000N1800_HYDRO_PLANCK_LARGE_NU_VARY",
-    "L1000N1800_HYDRO_PLANCK_LARGER_NU_FIXED",
-    "L1000N1800_HYDRO_LOW_SIGMA8",
-    "L1000N1800_HYDRO_LOW_SIGMA8_STRONGEST_AGN",
-    "L1000N1800_HYDRO_PLANCK_DCDM_12",
-    "L1000N1800_HYDRO_PLANCK_DCDM_24",
-    "L1000N1800_HYDRO_ADIABATIC",
+# Run name, Data location, Plotting colour
+FLAMINGO_runs = [
+    (
+        r"L1$\_$m9",
+        "L1000N1800/HYDRO_FIDUCIAL",
+        "#117733",
+    ),
+    (
+        r"L2p8$\_$m9",
+        "L2800N5040/HYDRO_FIDUCIAL",
+        "#332288",
+    ),
+    (
+        r"L1$\_$m10",
+        "L1000N0900/HYDRO_FIDUCIAL",
+        "#DDCC77",
+    ),
+    (
+        r"L1$\_$m8",
+        "L1000N3600/HYDRO_FIDUCIAL",
+        "#CC6677",
+    ),
+    (
+        r"fgas$+2\sigma$",
+        "L1000N1800/HYDRO_WEAK_AGN",
+        "#abd0e6",
+    ),
+    (
+        r"fgas$-2\sigma$",
+        "L1000N1800/HYDRO_STRONG_AGN",
+        "#6aaed6",
+    ),
+    (
+        r"fgas$-4\sigma$",
+        "L1000N1800/HYDRO_STRONGER_AGN",
+        "#3787c0",
+    ),
+    (
+        r"fgas$-8\sigma$",
+        "L1000N1800/HYDRO_STRONGEST_AGN",
+        "#105ba4",
+    ),
+    (
+        r"M*$-\sigma$",
+        "L1000N1800/HYDRO_STRONG_SUPERNOVA",
+        "#FF8C40",
+    ),
+    (
+        r"M*$-\sigma+$fgas$-4\sigma$",
+        "L1000N1800/HYDRO_STRONGER_AGN_STRONG_SUPERNOVA",
+        "#CC4314",
+    ),
+    (
+        r"JETS",
+        "L1000N1800/HYDRO_JETS_published",
+        "#71E543",
+    ),
+    (
+        r"JETS fgas$-4\sigma$",
+        "L1000N1800/HYDRO_STRONG_JETS_published",
+        "#55E18E",
+    ),
+    (
+        r"Planck",
+        "L1000N1800/HYDRO_PLANCK",
+        "#44AA99",
+    ),
+    (
+        r"PlanckNu0p24Fix ",
+        "L1000N1800/HYDRO_PLANCK_LARGE_NU_FIXED",
+        "#999933",
+    ),
+    (
+        r"PlanckNu0p24Var",
+        "L1000N1800/HYDRO_PLANCK_LARGE_NU_VARY",
+        "#AA4499",
+    ),
+    (
+        r"PlanckNu0p48Fix",
+        "L1000N1800/HYDRO_PLANCK_LARGER_NU_FIXED",
+        "#7a4214",
+    ),
+    (
+        r"LS8",
+        "L1000N1800/HYDRO_LOW_SIGMA8",
+        "#882255",
+    ),
+    (
+        r"LS8_fgas$-8\sigma$",
+        "L1000N1800/HYDRO_LOW_SIGMA8_STRONGEST_AGN",
+        "#7b68ee",
+    ),
+    (
+        r"PlanckDCDM12",
+        "L1000N1800/HYDRO_PLANCK_DCDM_12",
+        "#FFD700",
+    ),
+    (
+        r"PlanckDCDM24",
+        "L1000N1800/HYDRO_PLANCK_DCDM_24",
+        "#FFA500",
+    ),
+    (
+        r"no-cooling",
+        "L1000N1800/HYDRO_ADIABATIC",
+        "#000000",
+    ),
 ]
   </pre>
 </div>
