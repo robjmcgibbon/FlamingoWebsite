@@ -54,28 +54,22 @@ some small artifacts (such as the small peak in the middle of the z=2 line in th
 </p>
 
 <p>
-If you use the power spectra in a publication, then please cite the FLAMINGO project description paper (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.4978S/abstract" class="active text-decoration-none">Schaye+23</a>) and the paper presenting the power spectra (<a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>). If the calibration of the subgrid feedback is mentioned, then please cite the paper describing how the calibration was done (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.6103K/abstract" class="active text-decoration-none">Kugel+23</a>).
+If you use the power spectra in a publication, then please cite the FLAMINGO project description paper (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.4978S/abstract" class="active text-decoration-none">Schaye+23</a>) and the paper presenting the power spectra (<a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+25</a>). If the calibration of the subgrid feedback is mentioned, then please cite the paper describing how the calibration was done (<a href="https://ui.adsabs.harvard.edu/abs/2023MNRAS.526.6103K/abstract" class="active text-decoration-none">Kugel+23</a>).
 </p>
 
 <h2>Baryonic response emulator</h2>
 
-<!--TODO: Add link to PyPI webpage-->
 <p>
-<!--The effect of baryons on the matter power spectrum for all the simulations varying feedback in the FLAMINGO-->
-<!--suite is presented in the form of a Gaussian process emulator encapsulated in a python package. -->
-<!--It is available via PyPI index (<code> pip install FlamingoBaryonResponseEmulator </code>) or from -->
-<!--<a href="https://github.com/FLAMINGOSIM/FlamingoBaryonResponseEmulator" class="active text-decoration-none">github</a>,-->
-<!--where full documentation is also available.-->
 A Gaussian process emulator to model the effect of baryons on the matter power spectrum for all the simulations varying feedback in the FLAMINGO
-suite has been developed as part of <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>.
-Upon acceptance of the paper it shall become publically available via PyPI index and on github.
+suite has been developed as part of <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+25</a>.
+It is available via PyPI index (<code> pip install FlamingoBaryonResponseEmulator </code>) or from
+<a href="https://github.com/FLAMINGOSIM/FlamingoBaryonResponseEmulator" class="active text-decoration-none">github</a>,
+where examples are also available.
 </p>
 
 <p>
 The emulator can be used to predict the deviation of the matter power spectrum for the hydrodynamical simulation 
 from the corresponding dark matter only simulation due to baryon and galaxy formation physics.
-<!--The package is described by -->
-<!--<a href="https://ui.adsabs.harvard.edu/abs/2024arXiv241017109S/abstract" class="active text-decoration-none">Schaller+24</a>. -->
 The response as a function of wavenumber <i>k</i> is returned
 by the emulator as a function of redshift and three parameters characterizing the galaxy and cluster properties 
 in the simulations. These are (i) the offset in the gas fraction in clusters from the Xray-based data used for 

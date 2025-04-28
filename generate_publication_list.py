@@ -18,7 +18,11 @@ rows = 40
 # Initial query, get total number of papers
 query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
 results = requests.get(query, headers=headers)
-n_bibcodes_in_library = results.json()['metadata']['num_documents']
+try:
+    n_bibcodes_in_library = results.json()['metadata']['num_documents']
+except KeyError:
+    print(results.json())
+    raise KeyError
 bibcodes += results.json()['documents']
 
 # Pagination
