@@ -219,11 +219,23 @@ team.html:
   title: Team
 
 power_spectra.html:
-  title: Power Spectra
+  # Don't add this page to the navbar
+  # Full power spectra are available in the data release
+  title: ""
 
 simulations.html:
   title: Simulations
 
 simulation_colours.html:
   # Don't add this page to the navbar
+  title: ""
+
+# These are just to have a link to the data release site
+data.html:
+  title: Data release
+
+mailing-list.html:
+  title: ""
+
+known-issues.html:
   title: ""

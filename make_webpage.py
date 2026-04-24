@@ -47,10 +47,15 @@ def make_navbar(pages, templates):
 
     links = ""
     for page in pages:
+        href = page
+        # Use this to avoid needing the redirect
+        if page == 'data.html':
+            href = 'https://dataweb.cosma.dur.ac.uk:8443/flamingo/introduction.html'
+
         # skip pages with no name
         if not pages[page]["title"] == "":
             links += template_replace(
-                navlink, {"HREF": page, "NAME": pages[page]["title"]}
+                navlink, {"HREF": href, "NAME": pages[page]["title"]}
             )
 
     return template_replace(navbar, {"LINK_LIST": links})

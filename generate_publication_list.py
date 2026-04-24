@@ -1,6 +1,8 @@
+import sys
 import requests
 import html
 from urllib.parse import urlencode
+import logging
 
 # Place your ADS API token in a file with suitable permissions
 with open('token', 'r') as file:
@@ -21,7 +23,7 @@ results = requests.get(query, headers=headers)
 try:
     n_bibcodes_in_library = results.json()['metadata']['num_documents']
 except KeyError:
-    print(results.json())
+    logging.error(f'HTTP status code: {results.status_code}')
     raise KeyError
 bibcodes += results.json()['documents']
 
@@ -29,7 +31,11 @@ bibcodes += results.json()['documents']
 while len(bibcodes) < n_bibcodes_in_library:
     query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
     results = requests.get(query, headers=headers)
-    bibcodes += results.json()['documents']
+    try:
+        bibcodes += results.json()['documents']
+    except Exception as e:
+        print(results)
+        raise e
 
 
 def format_paper_data(result):
@@ -38,8 +44,21 @@ def format_paper_data(result):
     we want to display on the webpage.
     '''
 
-    # Generate author list
-    if len(result['author']) < 20:
+    # Determine arxiv identifier
+    arxiv_identifier = ''
+    for identifier in result['identifier']:
+        if 'arXiv:' in identifier:
+            arxiv_identifier = identifier.replace('arXiv:', '')
+    if arxiv_identifier == '':
+        # NOTE: The arxiv link appears to get temporarily removed when a paper gets published.
+        #       I don't want to raise an error in this case, since it happens quite often.
+        #       Setting the identifier to 9999 so the paper appears at the end of the list
+        print(f'Arxiv link not found for: {result["identifier"][0]}', file=sys.stderr)
+        arxiv_identifier = '99999'
+        # raise KeyError
+
+    # Generate author list (list all authors for the main reference papers)
+    if (len(result['author']) < 20) or (arxiv_identifier in ['2306.04024', '2306.05492']):
         author = ''
         for a in result['author']:
             last, first = a.split(', ')
@@ -48,15 +67,6 @@ def format_paper_data(result):
     else:
         last, first = result['author'][0].split(', ')
         author = first + ' ' + last + ' et al.'
-
-    # Determine arxiv identifier
-    arxiv_identifier = ''
-    for identifier in result['identifier']:
-        if 'arXiv:' in identifier:
-            arxiv_identifier = identifier.replace('arXiv:', '')
-    if arxiv_identifier == '':
-        print(f'Arxiv link not found for: {result["identifier"][0]}')
-        exit()
 
     # Shorter name for journal
     journal = {
