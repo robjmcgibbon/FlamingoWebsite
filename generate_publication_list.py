@@ -50,9 +50,10 @@ def format_paper_data(result):
         if 'arXiv:' in identifier:
             arxiv_identifier = identifier.replace('arXiv:', '')
     if arxiv_identifier == '':
-        # NOTE: The arxiv link appears to get temporarily removed when a paper gets published.
-        #       I don't want to raise an error in this case, since it happens quite often.
-        #       Setting the identifier to 9999 so the paper appears at the end of the list
+        # NOTE: The arxiv link appears to get temporarily removed when a paper 
+        #       gets published. I don't want to raise an error in this case,
+        #       since it happens quite often. I set the identifier to 99999 so the
+        #       paper appears at the end of the list
         print(f'Arxiv link not found for: {result["identifier"][0]}', file=sys.stderr)
         arxiv_identifier = '99999'
         # raise KeyError
@@ -119,8 +120,11 @@ with open('src/pages/papers.html', 'w') as file:
         file.write(f'<li><p><h5>{paper[0]}</h5>\n')
         file.write(f'<i>{paper[1]}</i><br>\n')
         file.write(f'{paper[4]} ({paper[5]}), ')
-        file.write(f'<a href="{paper[2]}" class="active text-decoration-none">ADS</a>, ')
-        file.write(f'<a href="{paper[3]}" class="active text-decoration-none">arXiv</a></p></li>\n')
+        file.write(f'<a href="{paper[2]}" class="active text-decoration-none">ADS</a>')
+        if paper[3] != 'https://arxiv.org/abs/99999':
+            # Skip arxiv if an identifier cannot be found
+            file.write(f', <a href="{paper[3]}" class="active text-decoration-none">arXiv</a>')
+        file.write('</p></li>\n')
 
     file.write('</ol>\n')
 
