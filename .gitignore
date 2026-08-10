@@ -7,3 +7,5 @@ build/*
 src/pages/papers.html
 token
 cron_job.out
+arxiv_id_cache.yml
+__pycache__/*

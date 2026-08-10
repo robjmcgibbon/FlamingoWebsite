@@ -1,8 +1,34 @@
+import os
 import sys
 import requests
 import html
+import yaml
 from urllib.parse import urlencode
-import logging
+
+# Cache mapping normalised paper title -> arxiv identifier. Used as a
+# fallback for the case where a paper's arxiv identifier is
+# temporarily missing from its ADS record, which happens for a few days
+# around when the paper gets accepted by a journal.
+ARXIV_ID_CACHE_PATH = 'arxiv_id_cache.yml'
+
+
+def normalize_title(title):
+    # Truncate to 122 characters, the maximum size of a PyYAML key
+    return ''.join(title.split()).lower()[:122]
+
+
+def load_arxiv_id_cache():
+    if not os.path.exists(ARXIV_ID_CACHE_PATH):
+        return {}
+    with open(ARXIV_ID_CACHE_PATH, 'r') as file:
+        cache = yaml.safe_load(file)
+    return cache or {}
+
+
+def save_arxiv_id_cache(cache):
+    with open(ARXIV_ID_CACHE_PATH, 'w') as file:
+        yaml.safe_dump(cache, file, sort_keys=True, allow_unicode=True)
+
 
 # Place your ADS API token in a file with suitable permissions
 with open('token', 'r') as file:
@@ -22,10 +48,10 @@ query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={row
 results = requests.get(query, headers=headers)
 try:
     n_bibcodes_in_library = results.json()['metadata']['num_documents']
-except KeyError:
-    logging.error(f'HTTP status code: {results.status_code}')
-    raise KeyError
-bibcodes += results.json()['documents']
+    bibcodes += results.json()['documents']
+except (KeyError, requests.exceptions.JSONDecodeError):
+    print(f'Unexpected response from ADS, status code: {results.status_code}, body: {results.text}', file=sys.stderr)
+    raise
 
 # Pagination
 while len(bibcodes) < n_bibcodes_in_library:
@@ -33,16 +59,19 @@ while len(bibcodes) < n_bibcodes_in_library:
     results = requests.get(query, headers=headers)
     try:
         bibcodes += results.json()['documents']
-    except Exception as e:
-        print(results)
-        raise e
+    except (KeyError, requests.exceptions.JSONDecodeError):
+        print(f'Unexpected response from ADS, status code: {results.status_code}, body: {results.text}', file=sys.stderr)
+        raise
 
 
-def format_paper_data(result):
+def format_paper_data(result, arxiv_id_cache):
     '''
     Takes in the ADS OpenAPI response and extracts the information
     we want to display on the webpage.
     '''
+
+    title = result['title'][0]
+    normalized_title = normalize_title(title)
 
     # Determine arxiv identifier
     arxiv_identifier = ''
@@ -50,13 +79,18 @@ def format_paper_data(result):
         if 'arXiv:' in identifier:
             arxiv_identifier = identifier.replace('arXiv:', '')
     if arxiv_identifier == '':
-        # NOTE: The arxiv link appears to get temporarily removed when a paper 
-        #       gets published. I don't want to raise an error in this case,
-        #       since it happens quite often. I set the identifier to 99999 so the
-        #       paper appears at the end of the list
-        print(f'Arxiv link not found for: {result["identifier"][0]}', file=sys.stderr)
-        arxiv_identifier = '99999'
-        # raise KeyError
+        # The arxiv identifier can be temporarily removed from a paper's ADS
+        # record around when it gets accepted by a journal, before ADS
+        # relinks it a few days later. Fall back to the id we cached from
+        # the last time this paper resolved successfully.
+        if normalized_title in arxiv_id_cache:
+            arxiv_identifier = arxiv_id_cache[normalized_title]
+            print(f'Arxiv link not found for: {result["identifier"][0]}, using cached id {arxiv_identifier}', file=sys.stderr)
+        else:
+            print(f'Arxiv link not found for: {result["identifier"][0]}, no cached id available', file=sys.stderr)
+            arxiv_identifier = '99999'
+    else:
+        arxiv_id_cache[normalized_title] = arxiv_identifier
 
     # Generate author list (list all authors for the main reference papers)
     if (len(result['author']) < 20) or (arxiv_identifier in ['2306.04024', '2306.05492']):
@@ -81,13 +115,15 @@ def format_paper_data(result):
 
     # Return parsed data
     return (
-        html.escape(result['title'][0]), # Escape troublesome characters
+        html.escape(title), # Escape troublesome characters
         author,
         f'https://ui.adsabs.harvard.edu/abs/{result["identifier"][0]}',
         f'https://arxiv.org/abs/{arxiv_identifier}',
         journal,
         result['year'],
     )
+
+arxiv_id_cache = load_arxiv_id_cache()
 
 # Use the API to get information for the papers
 papers = []
@@ -103,8 +139,10 @@ for i in range(0, len(bibcodes), rows):
 
     for result in results.json()['response']['docs']:
         print(f'Processing paper: {len(papers)+1}/{len(bibcodes)}')
-        data = format_paper_data(dict(result))
+        data = format_paper_data(dict(result), arxiv_id_cache)
         papers.append(data)
+
+save_arxiv_id_cache(arxiv_id_cache)
 
 # Sort based on arxiv identifier
 papers = sorted(papers, key=lambda d: d[3])
@@ -127,4 +165,3 @@ with open('src/pages/papers.html', 'w') as file:
         file.write('</p></li>\n')
 
     file.write('</ol>\n')
-
