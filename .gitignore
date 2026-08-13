@@ -5,7 +5,8 @@ build/*
 *.pdf
 *.mp4
 src/pages/papers.html
-token
+ADS_token
 cron_job.out
+cron_job_citations.out
 arxiv_id_cache.yml
 __pycache__/*

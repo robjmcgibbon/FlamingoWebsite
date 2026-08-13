@@ -31,7 +31,7 @@ def save_arxiv_id_cache(cache):
 
 
 # Place your ADS API token in a file with suitable permissions
-with open('token', 'r') as file:
+with open('ADS_token', 'r') as file:
     token = file.read().rstrip()
 
 # Identifier of the FLAMINGO ADS library
@@ -58,10 +58,18 @@ while len(bibcodes) < n_bibcodes_in_library:
     query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
     results = requests.get(query, headers=headers)
     try:
-        bibcodes += results.json()['documents']
+        documents = results.json()['documents']
     except (KeyError, requests.exceptions.JSONDecodeError):
         print(f'Unexpected response from ADS, status code: {results.status_code}, body: {results.text}', file=sys.stderr)
         raise
+    if not documents:
+        # ADS counts every bibcode in the library, but only serves those which
+        # still resolve to a record. If one has been merged or deleted the two
+        # numbers disagree and we would loop forever waiting for the rest.
+        print(f'ADS reports {n_bibcodes_in_library} papers in the library but only served {len(bibcodes)}, '
+              'probably an unmatched or merged record')
+        break
+    bibcodes += documents
 
 
 def format_paper_data(result, arxiv_id_cache):
@@ -127,13 +135,15 @@ arxiv_id_cache = load_arxiv_id_cache()
 
 # Use the API to get information for the papers
 papers = []
-rows = 5  # How many papers to include for each API call
+rows = 100  # How many papers to include for each API call
 for i in range(0, len(bibcodes), rows):
     bibcode_query = f'bibcode:{bibcodes[i]}'
     for j in range(1, rows):
         if i + j < len(bibcodes):
             bibcode_query += f' OR bibcode:{bibcodes[i+j]}'
-    query_parameters = urlencode({"q": bibcode_query, 'fl': 'title,author,pubdate,date,pub,identifier,year'})
+    # rows must be passed to ADS, without it ADS returns its default of 10 documents,
+    # silently dropping the rest of the batch.
+    query_parameters = urlencode({"q": bibcode_query, 'fl': 'title,author,pubdate,date,pub,identifier,year', 'rows': rows})
     query = "https://api.adsabs.harvard.edu/v1/search/query?{}".format(query_parameters)
     results = requests.get(query, headers=headers)
 
