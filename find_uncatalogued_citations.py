@@ -250,8 +250,7 @@ def main():
         return
 
     # Written to stderr so that cron emails it, see the note at the top
-    print('The following papers cite a FLAMINGO paper but are not in the FLAMINGO ADS library:', file=sys.stderr)
-    print(f'Library: https://scixplorer.org/user/libraries/{LIBRARY}\n', file=sys.stderr)
+    print('The following papers cite the FLAMINGO data release paper but are not in the FLAMINGO ADS library:\n', file=sys.stderr)
     for doc in missing.values():
         print(format_paper(doc), file=sys.stderr)
         print(file=sys.stderr)
