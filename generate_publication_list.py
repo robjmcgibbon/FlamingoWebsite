@@ -44,7 +44,7 @@ headers = {'Authorization': 'Bearer ' + token}
 rows = 40
 
 # Initial query, get total number of papers
-query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
+query = f"https://api.scixplorer.org/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
 results = requests.get(query, headers=headers)
 try:
     n_bibcodes_in_library = results.json()['metadata']['num_documents']
@@ -55,7 +55,7 @@ except (KeyError, requests.exceptions.JSONDecodeError):
 
 # Pagination
 while len(bibcodes) < n_bibcodes_in_library:
-    query = f"https://api.adsabs.harvard.edu/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
+    query = f"https://api.scixplorer.org/v1/biblib/libraries/{library}?rows={rows}&start={len(bibcodes)}"
     results = requests.get(query, headers=headers)
     try:
         documents = results.json()['documents']
@@ -125,7 +125,7 @@ def format_paper_data(result, arxiv_id_cache):
     return (
         html.escape(title), # Escape troublesome characters
         author,
-        f'https://ui.adsabs.harvard.edu/abs/{result["identifier"][0]}',
+        f'https://scixplorer.org/abs/{result["identifier"][0]}',
         f'https://arxiv.org/abs/{arxiv_identifier}',
         journal,
         result['year'],
@@ -144,7 +144,7 @@ for i in range(0, len(bibcodes), rows):
     # rows must be passed to ADS, without it ADS returns its default of 10 documents,
     # silently dropping the rest of the batch.
     query_parameters = urlencode({"q": bibcode_query, 'fl': 'title,author,pubdate,date,pub,identifier,year', 'rows': rows})
-    query = "https://api.adsabs.harvard.edu/v1/search/query?{}".format(query_parameters)
+    query = "https://api.scixplorer.org/v1/search/query?{}".format(query_parameters)
     results = requests.get(query, headers=headers)
 
     for result in results.json()['response']['docs']:
@@ -168,7 +168,7 @@ with open('src/pages/papers.html', 'w') as file:
         file.write(f'<li><p><h5>{paper[0]}</h5>\n')
         file.write(f'<i>{paper[1]}</i><br>\n')
         file.write(f'{paper[4]} ({paper[5]}), ')
-        file.write(f'<a href="{paper[2]}" class="active text-decoration-none">ADS</a>')
+        file.write(f'<a href="{paper[2]}" class="active text-decoration-none">SciX</a>')
         if paper[3] != 'https://arxiv.org/abs/99999':
             # Skip arxiv if an identifier cannot be found
             file.write(f', <a href="{paper[3]}" class="active text-decoration-none">arXiv</a>')

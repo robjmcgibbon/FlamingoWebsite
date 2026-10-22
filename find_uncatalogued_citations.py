@@ -57,7 +57,7 @@ def get_library_bibcodes(headers):
     bibcodes = []
     n_bibcodes_in_library = None
     while (n_bibcodes_in_library is None) or (len(bibcodes) < n_bibcodes_in_library):
-        query = f'https://api.adsabs.harvard.edu/v1/biblib/libraries/{LIBRARY}?rows={ROWS}&start={len(bibcodes)}'
+        query = f'https://api.scixplorer.org/v1/biblib/libraries/{LIBRARY}?rows={ROWS}&start={len(bibcodes)}'
         response = get_json(query, headers)
         try:
             n_bibcodes_in_library = response['metadata']['num_documents']
@@ -90,7 +90,7 @@ def search(query_string, fields, headers):
             'rows': ROWS,
             'start': len(docs),
         })
-        response = get_json(f'https://api.adsabs.harvard.edu/v1/search/query?{query_parameters}', headers)
+        response = get_json(f'https://api.scixplorer.org/v1/search/query?{query_parameters}', headers)
         try:
             n_found = response['response']['numFound']
             page = response['response']['docs']
@@ -206,7 +206,7 @@ def format_paper(doc):
         f'  {title}',
         f'  {author} ({doc.get("year", "")}), {doc.get("pub", "")}',
         f'  Appeared no later than: {appeared}',
-        f'  https://ui.adsabs.harvard.edu/abs/{doc["bibcode"]}/abstract',
+        f'  https://scixplorer.org/abs/{doc["bibcode"]}',
     ]
     if arxiv_identifier != '':
         lines.append(f'  https://arxiv.org/abs/{arxiv_identifier}')
@@ -251,7 +251,7 @@ def main():
 
     # Written to stderr so that cron emails it, see the note at the top
     print('The following papers cite a FLAMINGO paper but are not in the FLAMINGO ADS library:', file=sys.stderr)
-    print(f'Library: https://ui.adsabs.harvard.edu/user/libraries/{LIBRARY}\n', file=sys.stderr)
+    print(f'Library: https://scixplorer.org/user/libraries/{LIBRARY}\n', file=sys.stderr)
     for doc in missing.values():
         print(format_paper(doc), file=sys.stderr)
         print(file=sys.stderr)
