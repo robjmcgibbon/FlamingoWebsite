@@ -27,6 +27,7 @@ IGNORED_IDENTIFIERS = [
     'arXiv:2603.22670 ',
     'arXiv:2606.19452',
     'arXiv:2607.01175',
+    'arXiv:2609.16128',
 ]
 
 # Papers are only reported once they have been on arxiv for this long. This
