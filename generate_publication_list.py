@@ -154,6 +154,13 @@ for i in range(0, len(bibcodes), rows):
 
 save_arxiv_id_cache(arxiv_id_cache)
 
+# ADS can return fewer records than we asked for without reporting an error.
+# Fail here so that cron_job.sh keeps the existing page rather than deploying
+# an incomplete list.
+if len(papers) != len(bibcodes):
+    print(f'ADS returned {len(papers)} papers but the library contains {len(bibcodes)}', file=sys.stderr)
+    sys.exit(1)
+
 # Sort based on arxiv identifier
 papers = sorted(papers, key=lambda d: d[3])
 
